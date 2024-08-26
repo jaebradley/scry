@@ -1,0 +1,22 @@
+{
+  "name": "scry",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaebradley/scry.git"
+  },
+  "author": "jae.b.bradley@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jaebradley/scry/issues"
+  },
+  "homepage": "https://github.com/jaebradley/scry#readme",
+  "devDependencies": {
+    "vitest": "^2.0.5"
+  }
+}
