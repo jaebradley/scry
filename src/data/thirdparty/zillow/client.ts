@@ -42,7 +42,7 @@ type SearchPageResult = {
     statusText: string;
     countryCurrency: string;
     price: string;
-    unformattedPrice: string;
+    unformattedPrice: number;
     address: string;
     addressStreet: string;
     addressCity: string;

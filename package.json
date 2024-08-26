@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/jaebradley/scry#readme",
   "devDependencies": {
+    "@types/node": "^22.5.0",
     "vitest": "^2.0.5"
+  },
+  "dependencies": {
+    "@googlemaps/google-maps-services-js": "^3.4.0"
   }
 }
