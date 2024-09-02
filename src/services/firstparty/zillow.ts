@@ -1,4 +1,4 @@
-import GeocodeClient, {ViewportCoordinatesAccessor} from "../../data/thirdparty/googlemaps/client";
+import {ViewportCoordinatesAccessor} from "../../data/thirdparty/googlemaps/client";
 import {SearchPageResponseAccessor, SearchPageResult} from "../../data/thirdparty/zillow/client";
 
 
@@ -13,7 +13,12 @@ class OrderedPropertiesCalculator {
 
     async getPropertiesOrderedByLargestDifferenceBetweenListingAndEstimatedPrice(location: string): Promise<Array<SearchPageResult>> {
         const boundaries = await this.viewportAccessor.getViewportCoordinates(location)
-            .then(coordinates => coordinates.map(v => ({ north: v.northeast.lat, east: v.northeast.lng, south: v.southwest.lat, west: v.southwest.lng })));
+            .then(coordinates => coordinates.map(v => ({
+                north: v.northeast.lat,
+                east: v.northeast.lng,
+                south: v.southwest.lat,
+                west: v.southwest.lng
+            })));
         // TODO: publish/read from a document store
         const result = await this.searchPageAccessor(boundaries[0], 1);
         let results = [result.cat1.searchResults.listResults];
