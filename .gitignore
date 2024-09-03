@@ -79,6 +79,9 @@ web_modules/
 .env.production.local
 .env.local
 
+# secrets (https://developers.cloudflare.com/pages/functions/bindings/#interact-with-your-secrets-locally)
+.dev.vars
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
