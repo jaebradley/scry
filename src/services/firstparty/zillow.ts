@@ -1,5 +1,13 @@
-import {ViewportCoordinatesAccessor} from "../../data/thirdparty/googlemaps/client";
+import {ViewportCoordinatesAccessor} from "../../data/firstparty/googlemaps/client";
 import {SearchPageResponseAccessor, SearchPageResult} from "../../data/thirdparty/zillow/client";
+
+// TODO: @jae.bradley add latitude and longitude value types
+type BoundaryBox = {
+    north: number;
+    east: number;
+    south: number;
+    west: number;
+}
 
 
 class OrderedPropertiesCalculator {
@@ -12,8 +20,8 @@ class OrderedPropertiesCalculator {
     }
 
     async getPropertiesOrderedByLargestDifferenceBetweenListingAndEstimatedPrice(location: string): Promise<Array<SearchPageResult>> {
-        const boundaries = await this.viewportAccessor.getViewportCoordinates(location)
-            .then(coordinates => coordinates.map(v => ({
+        const boundaries: Array<BoundaryBox> = await this.viewportAccessor.getViewportCoordinates(location)
+            .then(coordinates => coordinates.map<BoundaryBox>(v => ({
                 north: v.northeast.lat,
                 east: v.northeast.lng,
                 south: v.southwest.lat,
