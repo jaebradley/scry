@@ -9,6 +9,7 @@ type Data = {
 
 const Header = (data: Data) => {
     return (
+        <thead>
         <tr>
             {
                 Array.from(data.namesByColumn.entries())
@@ -19,6 +20,7 @@ const Header = (data: Data) => {
                     ))
             }
         </tr>
+        </thead>
     );
 }
 

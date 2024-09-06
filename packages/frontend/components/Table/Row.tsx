@@ -2,6 +2,7 @@ enum Column {
     Address,
     Price,
     Estimate,
+    Difference,
 }
 
 type Data = {
@@ -26,5 +27,8 @@ const Row = (data: Data) => {
 
 export default Row;
 export {
-    Column
+    Column,
+}
+export type {
+    Data
 }
