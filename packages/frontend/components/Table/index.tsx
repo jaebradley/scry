@@ -1,12 +1,11 @@
 'use client';
-
 import {Fragment, useState} from "react";
 import Header from "@/components/Table/Header";
 import Row, {Column, Data as RowData} from "@/components/Table/Row";
 
 type Pair<First, Second> = {
-    first: any;
-    second: any;
+    first: First;
+    second: Second;
 }
 
 type PropertyData = {
@@ -23,14 +22,38 @@ type Data = {
     orderedColumns: Column[];
     namesByColumn: Map<Column, string>;
     propertyData: PropertyData[];
-    comparatorsByColumn: Record<Column, IComparator<string> | IComparator<number>>;
-    formattersByColumn: Record<Column, ((value: string) => string) | ((value: number) => string)>;
 }
 
 enum SortDirection {
     Ascending,
     Descending,
 }
+
+const COMPARATORS_BY_COLUMN: Record<Column, IComparator<string> | IComparator<number>> = {
+    [Column.Address]: (a: string, b: string) => a.localeCompare(b),
+    [Column.Price]: (a: number, b: number) => a - b,
+    [Column.Estimate]: (a: number, b: number) => a - b,
+    [Column.Difference]: (a: number, b: number) => a - b,
+};
+
+const FORMATTERS_BY_COLUMN: Record<Column, ((value: string) => string) | ((value: number) => string)> = {
+    [Column.Address]: (v: string) => v,
+    [Column.Price]: (v: number) => v.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0
+    }),
+    [Column.Estimate]: (v: number) => v.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0
+    }),
+    [Column.Difference]: (v: number) => v.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0
+    }),
+};
 
 const Table = (data: Data) => {
     const [activelySortedColumn, setActivelySortedColumn] = useState<Pair<Column, SortDirection> | undefined>(undefined);
@@ -46,11 +69,11 @@ const Table = (data: Data) => {
         setActivelySortedColumn({first: column, second: SortDirection.Descending});
     }
 
-    const propertyDataFormatter = (propertyData: PropertyData): Map<Column, string> => new Map(data.orderedColumns.map(column => ([column, data.formattersByColumn[column](propertyData.valuesByColumn[column])])));
+    const propertyDataFormatter = (propertyData: PropertyData): Map<Column, string> => new Map(data.orderedColumns.map(column => ([column, FORMATTERS_BY_COLUMN[column](propertyData.valuesByColumn[column])])));
     const sortedData = activelySortedColumn ?
         data.propertyData.sort(
-            (a, b) => (activelySortedColumn.second === SortDirection.Descending ? -1 : 1) * (
-                data.comparatorsByColumn[activelySortedColumn.first as Column](
+            (a: PropertyData, b: PropertyData) => (activelySortedColumn.second === SortDirection.Descending ? -1 : 1) * (
+                COMPARATORS_BY_COLUMN[activelySortedColumn.first](
                     a.valuesByColumn[activelySortedColumn.first as Column],
                     b.valuesByColumn[activelySortedColumn.first as Column])
             )
