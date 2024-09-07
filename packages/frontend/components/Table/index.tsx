@@ -23,8 +23,8 @@ type Data = {
     orderedColumns: Column[];
     namesByColumn: Map<Column, string>;
     propertyData: PropertyData[];
-    comparatorsByColumn: Record<Column, IComparator<string | number>>;
-    formattersByColumn: Record<Column, (value: string | number) => string>;
+    comparatorsByColumn: Record<Column, IComparator<string> | IComparator<number>>;
+    formattersByColumn: Record<Column, ((value: string) => string) | ((value: number) => string)>;
 }
 
 enum SortDirection {
@@ -62,7 +62,7 @@ const Table = (data: Data) => {
         }));
 
     return (
-        <table>
+        <table className="border-collapse table-auto w-full text-sm">
             <Fragment>
                 <Header
                     namesByColumn={data.namesByColumn}
