@@ -1,3 +1,6 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLink } from '@fortawesome/free-solid-svg-icons'
+
 enum DataColumn {
     Address = "Address",
     Price = "Price",
@@ -13,8 +16,9 @@ type Column = DataColumn | UserSpecifiedColumn;
 
 type Data = {
     identifier: string;
-    valuesByColumn: Map<Column, string>
-    onClick: (address: string | undefined) => void
+    valuesByColumn: Map<Column, string>;
+    onClick: (address: string | undefined) => void;
+    detailUrl: string;
 }
 
 const Row = (props: Data) => {
@@ -24,7 +28,11 @@ const Row = (props: Data) => {
                 Array.from(props.valuesByColumn.entries())
                     .map(([key, value]) => (
                         <td key={`${props.identifier}-${key}`}>
-                            {value}
+                            {
+                                key === DataColumn.Address ?
+                                    <span>{value} <a href={props.detailUrl} target="_blank"><FontAwesomeIcon icon={faExternalLink}/></a></span>:
+                                    value
+                            }
                         </td>
                     ))
             }

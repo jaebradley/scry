@@ -10,7 +10,8 @@ type Pair<First, Second> = {
 
 type PropertyData = {
     identifier: string;
-    valuesByColumn: Record<DataColumn, string | number>
+    valuesByColumn: Record<DataColumn, string | number>;
+    detailUrl: string;
 }
 
 interface IComparator<T> {
@@ -92,7 +93,8 @@ const Table = (props: TableProps) => {
         .map(property => ({
             identifier: property.identifier,
             valuesByColumn: columnDataFormatter(property),
-            onClick: (address) => setSelectedPropertyAddress(address)
+            onClick: (address) => setSelectedPropertyAddress(address),
+            detailUrl: property.detailUrl
         }));
 
     useEffect(() => {
