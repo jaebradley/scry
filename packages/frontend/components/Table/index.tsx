@@ -2,6 +2,7 @@
 import {Fragment, useEffect, useMemo, useState} from "react";
 import Header from "@/components/Table/Header";
 import Row, {Column, Data as RowData, DataColumn, UserSpecifiedColumn} from "@/components/Table/Row";
+import Carousel from "@/components/Carousel";
 
 type Pair<First, Second> = {
     first: First;
@@ -12,6 +13,7 @@ type PropertyData = {
     identifier: string;
     valuesByColumn: Record<DataColumn, string | number>;
     detailUrl: string;
+    carouselPhotoUrls: string[];
 }
 
 interface IComparator<T> {
@@ -62,6 +64,7 @@ const FORMATTERS_BY_COLUMN: Record<Column, ((value: string) => string) | ((value
 const Table = (props: TableProps) => {
     const [activelySortedColumn, setActivelySortedColumn] = useState<Pair<DataColumn, SortDirection> | undefined>(undefined);
     const [selectedPropertyAddress, setSelectedPropertyAddress] = useState<string | undefined>(undefined);
+    const [selectedCarouselPhotoUrls, setSelectedCarouselPhotoUrls] = useState<string[]>([]);
 
     const handleColumnClick = (column: Column) => {
         if (column !== UserSpecifiedColumn.SelectedProperty) {
@@ -93,13 +96,18 @@ const Table = (props: TableProps) => {
         .map(property => ({
             identifier: property.identifier,
             valuesByColumn: columnDataFormatter(property),
-            onClick: (address) => setSelectedPropertyAddress(address),
-            detailUrl: property.detailUrl
+            onClick: (address, carouselPhotoUrls) => {
+                setSelectedPropertyAddress(address);
+                setSelectedCarouselPhotoUrls(carouselPhotoUrls);
+            },
+            detailUrl: property.detailUrl,
+            carouselPhotoUrls: property.carouselPhotoUrls,
         }));
 
     useEffect(() => {
         if (!selectedPropertyAddress) {
             setSelectedPropertyAddress(rowData[0].valuesByColumn.get(DataColumn.Address));
+            setSelectedCarouselPhotoUrls(rowData[0].carouselPhotoUrls);
         }
     }, [selectedPropertyAddress, setSelectedPropertyAddress, rowData]);
 
@@ -112,15 +120,18 @@ const Table = (props: TableProps) => {
         <>
             {
                 selectedPropertyAddress && (
-                    <iframe
-                        width="600"
-                        height="450"
-                        loading="lazy"
-                        allowFullScreen
-                        referrerPolicy="no-referrer-when-downgrade"
-                        src={`https://www.google.com/maps/embed/v1/place?key=${props.apiKey}
+                    <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'space-around' }}>
+                        <iframe
+                            width="600"
+                            height="450"
+                            loading="lazy"
+                            allowFullScreen
+                            referrerPolicy="no-referrer-when-downgrade"
+                            src={`https://www.google.com/maps/embed/v1/place?key=${props.apiKey}
     &q=${selectedPropertyAddress}>`}
-                    />
+                        />
+                        <Carousel urls={selectedCarouselPhotoUrls} />
+                    </div>
                 )
             }
             <table className="border-collapse table-auto w-full text-sm">

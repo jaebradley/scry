@@ -17,13 +17,14 @@ type Column = DataColumn | UserSpecifiedColumn;
 type Data = {
     identifier: string;
     valuesByColumn: Map<Column, string>;
-    onClick: (address: string | undefined) => void;
+    onClick: (address: string | undefined, carouselPhotoUrls: string[]) => void;
     detailUrl: string;
+    carouselPhotoUrls: string[];
 }
 
 const Row = (props: Data) => {
     return (
-        <tr key={`${props.identifier}`} onClick={(_) => props.onClick(props.valuesByColumn.get(DataColumn.Address))}>
+        <tr key={`${props.identifier}`} onClick={(_) => props.onClick(props.valuesByColumn.get(DataColumn.Address), props.carouselPhotoUrls)}>
             {
                 Array.from(props.valuesByColumn.entries())
                     .map(([key, value]) => (
