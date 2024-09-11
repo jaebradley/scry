@@ -27,23 +27,24 @@ export default async function Page({params}: { params: { location: string } }) {
                 [DataColumn.Difference]: v.zestimate - v.unformattedPrice
             },
             detailUrl: v.detailUrl,
+            carouselPhotoUrls: (v.carouselPhotos || []).map(v => v.url),
         }))
 
     return (
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
-                <Table
-                    apiKey={apiKey}
-                    orderedColumns={[UserSpecifiedColumn.SelectedProperty, DataColumn.Address, DataColumn.Price, DataColumn.Estimate, DataColumn.Difference]}
-                    namesByColumn={
-                        new Map([
-                            [DataColumn.Address, "Address"],
-                            [DataColumn.Price, "Listing Price"],
-                            [DataColumn.Estimate, "Zillow Estimate"],
-                            [DataColumn.Difference, "Difference"],
-                        ])
-                    }
-                    propertyData={propertyData}
-                />
+        <main>
+            <Table
+                apiKey={apiKey}
+                orderedColumns={[UserSpecifiedColumn.SelectedProperty, DataColumn.Address, DataColumn.Price, DataColumn.Estimate, DataColumn.Difference]}
+                namesByColumn={
+                    new Map([
+                        [DataColumn.Address, "Address"],
+                        [DataColumn.Price, "Listing Price"],
+                        [DataColumn.Estimate, "Zillow Estimate"],
+                        [DataColumn.Difference, "Difference"],
+                    ])
+                }
+                propertyData={propertyData}
+            />
         </main>
     );
 }
