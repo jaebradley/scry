@@ -25,7 +25,8 @@ export default async function Page({params}: { params: { location: string } }) {
                 [DataColumn.Price]: v.unformattedPrice,
                 [DataColumn.Estimate]: v.zestimate,
                 [DataColumn.Difference]: v.zestimate - v.unformattedPrice
-            }
+            },
+            detailUrl: v.detailUrl,
         }))
 
     return (
