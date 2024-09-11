@@ -1,7 +1,7 @@
 import OrderedPropertiesCalculator from "../../../../backend/src/services/firstparty/zillow";
 import GeocodeClient from "../../../../backend/src/data/firstparty/googlemaps/client";
 import {getSearchPageResponse} from "../../../../backend/src/data/thirdparty/zillow/client";
-import {Column} from "@/components/Table/Row";
+import {DataColumn, UserSpecifiedColumn} from "@/components/Table/Row";
 import Table from "@/components/Table";
 
 const apiKey = process?.env?.GOOGLE_MAPS_API_KEY;
@@ -14,34 +14,35 @@ const calculator = new OrderedPropertiesCalculator(
     getSearchPageResponse
 );
 
-export default async function Page({ params }: { params: { location: string } }) {
+export default async function Page({params}: { params: { location: string } }) {
     const results = await calculator.getPropertiesOrderedByLargestDifferenceBetweenListingAndEstimatedPrice(params.location);
 
     const propertyData = results
         .map(v => ({
             identifier: v.id,
             valuesByColumn: {
-                [Column.Address]: v.address,
-                [Column.Price]: v.unformattedPrice,
-                [Column.Estimate]: v.zestimate,
-                [Column.Difference]: v.zestimate - v.unformattedPrice
+                [DataColumn.Address]: v.address,
+                [DataColumn.Price]: v.unformattedPrice,
+                [DataColumn.Estimate]: v.zestimate,
+                [DataColumn.Difference]: v.zestimate - v.unformattedPrice
             }
         }))
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-between p-24">
-            <Table
-                orderedColumns={[Column.Address, Column.Price, Column.Estimate, Column.Difference]}
-                namesByColumn={
-                    new Map([
-                        [Column.Address, "Address"],
-                        [Column.Price, "Listing Price"],
-                        [Column.Estimate, "Zillow Estimate"],
-                        [Column.Difference, "Difference"],
-                    ])
-                }
-                propertyData={propertyData}
-            />
+                <Table
+                    apiKey={apiKey}
+                    orderedColumns={[UserSpecifiedColumn.SelectedProperty, DataColumn.Address, DataColumn.Price, DataColumn.Estimate, DataColumn.Difference]}
+                    namesByColumn={
+                        new Map([
+                            [DataColumn.Address, "Address"],
+                            [DataColumn.Price, "Listing Price"],
+                            [DataColumn.Estimate, "Zillow Estimate"],
+                            [DataColumn.Difference, "Difference"],
+                        ])
+                    }
+                    propertyData={propertyData}
+                />
         </main>
     );
 }
