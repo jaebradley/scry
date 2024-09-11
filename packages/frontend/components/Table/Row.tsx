@@ -1,22 +1,29 @@
-enum Column {
-    Address,
-    Price,
-    Estimate,
-    Difference,
+enum DataColumn {
+    Address = "Address",
+    Price = "Price",
+    Estimate = "Estimate",
+    Difference = "Difference",
 }
+
+enum UserSpecifiedColumn {
+    SelectedProperty = "SelectedProperty",
+}
+
+type Column = DataColumn | UserSpecifiedColumn;
 
 type Data = {
     identifier: string;
     valuesByColumn: Map<Column, string>
+    onClick: (address: string | undefined) => void
 }
 
-const Row = (data: Data) => {
+const Row = (props: Data) => {
     return (
-        <tr>
+        <tr key={`${props.identifier}`} onClick={(_) => props.onClick(props.valuesByColumn.get(DataColumn.Address))}>
             {
-                Array.from(data.valuesByColumn.entries())
+                Array.from(props.valuesByColumn.entries())
                     .map(([key, value]) => (
-                        <td key={`${data.identifier}-${key}`}>
+                        <td key={`${props.identifier}-${key}`}>
                             {value}
                         </td>
                     ))
@@ -27,8 +34,10 @@ const Row = (data: Data) => {
 
 export default Row;
 export {
-    Column,
+    DataColumn,
+    UserSpecifiedColumn
 }
 export type {
-    Data
+    Data,
+    Column,
 }

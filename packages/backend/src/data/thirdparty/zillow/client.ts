@@ -121,7 +121,7 @@ const getSearchPageResponse: SearchPageResponseAccessor = async (area: MapBounda
             }),
             headers: {
                 'Host': 'www.zillow.com',
-                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:129.0) Gecko/20100100 Firefox/128.0',
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:129.0) Gecko/20100200 Firefox/128.0',
                 'Accept': '*/*',
                 'Accept-Language': 'en-US,en;q=0.5',
                 'Accept-Encoding': 'gzip, deflate, br, zstd',
