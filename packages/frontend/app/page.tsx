@@ -5,11 +5,15 @@ import { navigateToPropertiesPage } from  './actions';
 export default function Home() {
 
     return (
-        <main>
-            <form action={navigateToPropertiesPage}>
-                <input name="location" type="text" placeholder="Specify a location to search for properties..."/>
-                <button type="submit">Search</button>
-            </form>
+        <main style={{ width: '100%', height: '100%' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                <div style={{ display: 'flex', width: '20rem' }}>
+                    <form action={navigateToPropertiesPage}>
+                        <input style={{ width: '30rem', marginRight: '1rem' }} name="location" type="text" placeholder="Specify a location to search for properties..."/>
+                        <button type="submit">🔍</button>
+                    </form>
+                </div>
+            </div>
         </main>
     );
 }
