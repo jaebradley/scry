@@ -131,7 +131,7 @@ const Table = (props: TableProps) => {
                     </div>
                 )
             }
-            <table className="table-auto w-full border-separate border-spacing-x-3 border-spacing-y-3 text-md border border-slate-500">
+            <table className="table-auto w-full border-separate border-spacing-x-3 border-spacing-y-3 text-md">
                 <Fragment>
                     <Header
                         namesByColumn={headerNamesByColumn}
