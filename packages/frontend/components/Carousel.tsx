@@ -25,7 +25,7 @@ const Carousel = (props: { urls: string[] }) => {
             <div>
                 <FontAwesomeIcon icon={faChevronLeft} onClick={handleLeftClick}/>
             </div>
-            <div>
+            <div style={{ width: "600px", height: "450px" }}>
                 <img src={props.urls[activeUrlIndex]}/>
             </div>
             <div>

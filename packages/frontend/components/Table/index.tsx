@@ -22,8 +22,8 @@ interface IComparator<T> {
 
 type TableProps = {
     // TODO: @jaebradley turn this into an immutable ordered Record/Map
-    orderedColumns: Column[];
-    namesByColumn: Map<Column, string>;
+    orderedColumns: DataColumn[];
+    namesByColumn: Map<DataColumn, string>;
     propertyData: PropertyData[];
     apiKey: string;
 }
@@ -33,16 +33,14 @@ enum SortDirection {
     Descending,
 }
 
-const COMPARATORS_BY_COLUMN: Record<Column, IComparator<string> | IComparator<number>> = {
-    [UserSpecifiedColumn.SelectedProperty]: (_: string, __: string) => 0,
+const COMPARATORS_BY_COLUMN: Record<DataColumn, IComparator<string> | IComparator<number>> = {
     [DataColumn.Address]: (a: string, b: string) => a.localeCompare(b),
     [DataColumn.Price]: (a: number, b: number) => a - b,
     [DataColumn.Estimate]: (a: number, b: number) => a - b,
     [DataColumn.Difference]: (a: number, b: number) => a - b,
 };
 
-const FORMATTERS_BY_COLUMN: Record<Column, ((value: string) => string) | ((value: number) => string)> = {
-    [UserSpecifiedColumn.SelectedProperty]: (v: string) => v,
+const FORMATTERS_BY_COLUMN: Record<DataColumn, ((value: string) => string) | ((value: number) => string)> = {
     [DataColumn.Address]: (v: string) => v,
     [DataColumn.Price]: (v: number) => v.toLocaleString("en-US", {
         style: "currency",
@@ -83,15 +81,14 @@ const Table = (props: TableProps) => {
     }
 
     const columnDataFormatter = (propertyData: PropertyData): Map<Column, string> => new Map(props.orderedColumns.map(column => ([column, FORMATTERS_BY_COLUMN[column](propertyData.valuesByColumn[column])])));
-    const updatedPropertyData = useMemo(() => props.propertyData.map(v => ({ ...v, valuesByColumn: {...v.valuesByColumn, [UserSpecifiedColumn.SelectedProperty]: v.valuesByColumn[DataColumn.Address] === selectedPropertyAddress ? "📍" : ""}})), [selectedPropertyAddress, props]);
     const sortedData = activelySortedColumn ?
-        updatedPropertyData.sort(
+        props.propertyData.sort(
             (a: PropertyData, b: PropertyData) => (activelySortedColumn.second === SortDirection.Descending ? -1 : 1) * (
                 COMPARATORS_BY_COLUMN[activelySortedColumn.first](
                     a.valuesByColumn[activelySortedColumn.first as DataColumn],
                     b.valuesByColumn[activelySortedColumn.first as DataColumn])
             )
-        ) : updatedPropertyData;
+        ) : props.propertyData;
     const rowData: RowData[] = sortedData
         .map(property => ({
             identifier: property.identifier,
@@ -102,6 +99,7 @@ const Table = (props: TableProps) => {
             },
             detailUrl: property.detailUrl,
             carouselPhotoUrls: property.carouselPhotoUrls,
+            isSelected: property.valuesByColumn[DataColumn.Address] === selectedPropertyAddress,
         }));
 
     useEffect(() => {
@@ -111,16 +109,15 @@ const Table = (props: TableProps) => {
         }
     }, [selectedPropertyAddress, setSelectedPropertyAddress, rowData]);
 
-    const headerNamesByColumn = new Map<Column, string>([
-        [UserSpecifiedColumn.SelectedProperty, ''],
+    const headerNamesByColumn = new Map<DataColumn, string>([
         ...Array.from(props.namesByColumn.entries())
     ])
 
     return (
-        <>
+        <div style={{ padding: '3rem' }}>
             {
                 selectedPropertyAddress && (
-                    <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'space-around' }}>
+                    <div style={{display: "flex", flexDirection: 'row', justifyContent: 'space-around'}}>
                         <iframe
                             width="600"
                             height="450"
@@ -130,11 +127,11 @@ const Table = (props: TableProps) => {
                             src={`https://www.google.com/maps/embed/v1/place?key=${props.apiKey}
     &q=${selectedPropertyAddress}>`}
                         />
-                        <Carousel urls={selectedCarouselPhotoUrls} />
+                        <Carousel urls={selectedCarouselPhotoUrls}/>
                     </div>
                 )
             }
-            <table className="border-collapse table-auto w-full text-sm">
+            <table className="table-auto w-full border-separate border-spacing-x-3 border-spacing-y-3 text-md border border-slate-500">
                 <Fragment>
                     <Header
                         namesByColumn={headerNamesByColumn}
@@ -147,7 +144,7 @@ const Table = (props: TableProps) => {
                     </tbody>
                 </Fragment>
             </table>
-        </>
+        </div>
     );
 }
 
