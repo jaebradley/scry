@@ -34,7 +34,7 @@ export default async function Page({params}: { params: { location: string } }) {
         <main>
             <Table
                 apiKey={apiKey}
-                orderedColumns={[UserSpecifiedColumn.SelectedProperty, DataColumn.Address, DataColumn.Price, DataColumn.Estimate, DataColumn.Difference]}
+                orderedColumns={[DataColumn.Address, DataColumn.Price, DataColumn.Estimate, DataColumn.Difference]}
                 namesByColumn={
                     new Map([
                         [DataColumn.Address, "Address"],

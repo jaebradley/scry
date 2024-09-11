@@ -20,6 +20,7 @@ type Data = {
     onClick: (address: string | undefined, carouselPhotoUrls: string[]) => void;
     detailUrl: string;
     carouselPhotoUrls: string[];
+    isSelected: boolean;
 }
 
 const Row = (props: Data) => {
@@ -28,10 +29,10 @@ const Row = (props: Data) => {
             {
                 Array.from(props.valuesByColumn.entries())
                     .map(([key, value]) => (
-                        <td key={`${props.identifier}-${key}`}>
+                        <td key={`${props.identifier}-${key}`} style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                             {
                                 key === DataColumn.Address ?
-                                    <span>{value} <a href={props.detailUrl} target="_blank"><FontAwesomeIcon icon={faExternalLink}/></a></span>:
+                                    <span>{props.isSelected ? `📍 ${value}` : value} <a href={props.detailUrl} target="_blank"><FontAwesomeIcon icon={faExternalLink}/></a></span>:
                                     value
                             }
                         </td>
