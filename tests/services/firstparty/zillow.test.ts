@@ -1,7 +1,7 @@
-import OrderedPropertiesCalculator from "../../../src/services/firstparty/zillow";
-import GeocodeClient from "../../../src/data/firstparty/googlemaps/client";
+import OrderedPropertiesCalculator from "@/services/firstparty/zillow";
+import GeocodeClient from "@/data/firstparty/googlemaps/client";
 import {describe, expect, test} from "vitest";
-import {getSearchPageResponse} from "../../../src/data/thirdparty/zillow/client";
+import {getSearchPageResponse} from "@/data/thirdparty/zillow/client";
 
 describe('OrderedPropertiesCalculator', () => {
     describe('Get properties by largest difference between listing and estimated prices', () => {
