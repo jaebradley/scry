@@ -1,16 +1,16 @@
 import OrderedPropertiesCalculator from "../../../../backend/src/services/firstparty/zillow";
 import GeocodeClient from "../../../../backend/src/data/firstparty/googlemaps/client";
 import {getSearchPageResponse} from "../../../../backend/src/data/thirdparty/zillow/client";
-import {DataColumn, UserSpecifiedColumn} from "@/components/Table/Row";
+import {DataColumn} from "@/components/Table/Row";
 import Table from "@/components/Table";
 
-const apiKey = process?.env?.GOOGLE_MAPS_API_KEY;
-if (!apiKey) {
-    throw new Error("Missing apiKey");
+const GOOGLE_MAPS_GEOCODING_API_KEY = process?.env?.GOOGLE_MAPS_API_KEY;
+if (!GOOGLE_MAPS_GEOCODING_API_KEY) {
+    throw new Error("Missing Google Maps Geocoding API Key");
 }
 
 const calculator = new OrderedPropertiesCalculator(
-    new GeocodeClient(apiKey),
+    new GeocodeClient(GOOGLE_MAPS_GEOCODING_API_KEY),
     getSearchPageResponse
 );
 
@@ -33,7 +33,6 @@ export default async function Page({params}: { params: { location: string } }) {
     return (
         <main>
             <Table
-                apiKey={apiKey}
                 orderedColumns={[DataColumn.Address, DataColumn.Price, DataColumn.Estimate, DataColumn.Difference]}
                 namesByColumn={
                     new Map([

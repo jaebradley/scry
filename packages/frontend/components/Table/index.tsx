@@ -1,8 +1,13 @@
 'use client';
-import {Fragment, useEffect, useMemo, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
 import Header from "@/components/Table/Header";
 import Row, {Column, Data as RowData, DataColumn, UserSpecifiedColumn} from "@/components/Table/Row";
 import Carousel from "@/components/Carousel";
+
+const GOOGLE_MAPS_EMBED_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_API_KEY;
+if (!GOOGLE_MAPS_EMBED_API_KEY) {
+    throw new Error("Missing Google Maps Embed API Key");
+}
 
 type Pair<First, Second> = {
     first: First;
@@ -25,7 +30,6 @@ type TableProps = {
     orderedColumns: DataColumn[];
     namesByColumn: Map<DataColumn, string>;
     propertyData: PropertyData[];
-    apiKey: string;
 }
 
 enum SortDirection {
@@ -114,7 +118,7 @@ const Table = (props: TableProps) => {
     ])
 
     return (
-        <div style={{ padding: '3rem' }}>
+        <div style={{padding: '3rem'}}>
             {
                 selectedPropertyAddress && (
                     <div style={{display: "flex", flexDirection: 'row', justifyContent: 'space-around'}}>
@@ -124,7 +128,7 @@ const Table = (props: TableProps) => {
                             loading="lazy"
                             allowFullScreen
                             referrerPolicy="no-referrer-when-downgrade"
-                            src={`https://www.google.com/maps/embed/v1/place?key=${props.apiKey}
+                            src={`https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_EMBED_API_KEY}
     &q=${selectedPropertyAddress}>`}
                         />
                         <Carousel urls={selectedCarouselPhotoUrls}/>
