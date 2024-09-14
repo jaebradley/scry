@@ -1,6 +1,8 @@
-import OrderedPropertiesCalculator from "../../../../backend/src/services/firstparty/zillow";
-import GeocodeClient from "../../../../backend/src/data/firstparty/googlemaps/client";
-import {getSearchPageResponse} from "../../../../backend/src/data/thirdparty/zillow/client";
+export const runtime = 'edge';
+
+import OrderedPropertiesCalculator from "@/services/firstparty/zillow";
+import GeocodeClient from "@/data/firstparty/googlemaps/client";
+import {getSearchPageResponse} from "@/data/thirdparty/zillow/client";
 import {DataColumn} from "@/components/Table/Row";
 import Table from "@/components/Table";
 

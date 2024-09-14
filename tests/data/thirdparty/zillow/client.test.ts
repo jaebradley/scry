@@ -1,5 +1,5 @@
 import {describe, expect, test} from "vitest";
-import {getSearchPageResponse} from "../../../../src/data/thirdparty/zillow/client";
+import {getSearchPageResponse} from "@/data/thirdparty/zillow/client";
 
 describe("Client", () => {
     describe("getSearchPageResponse", () => {

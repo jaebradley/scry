@@ -84,11 +84,13 @@ const Table = (props: TableProps) => {
         }
     }
 
+    // @ts-ignore
     const columnDataFormatter = (propertyData: PropertyData): Map<Column, string> => new Map(props.orderedColumns.map(column => ([column, FORMATTERS_BY_COLUMN[column](propertyData.valuesByColumn[column])])));
     const sortedData = activelySortedColumn ?
         props.propertyData.sort(
             (a: PropertyData, b: PropertyData) => (activelySortedColumn.second === SortDirection.Descending ? -1 : 1) * (
                 COMPARATORS_BY_COLUMN[activelySortedColumn.first](
+                    // @ts-ignore
                     a.valuesByColumn[activelySortedColumn.first as DataColumn],
                     b.valuesByColumn[activelySortedColumn.first as DataColumn])
             )
