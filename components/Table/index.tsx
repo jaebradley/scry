@@ -125,36 +125,38 @@ const Table = (props: TableProps) => {
     ])
 
     return (
-        <div style={{padding: '3rem'}}>
+        <div style={{display: 'flex', flexDirection: 'column', gap: '3em'}}>
             {
                 selectedPropertyAddress && (
-                    <div style={{display: "flex", flexDirection: 'row', justifyContent: 'space-around'}}>
+                    <div style={{display: "flex", justifyContent: "space-evenly", gap: "2em", flexWrap: "wrap", padding: "1em"}}>
+                        <Carousel urls={selectedCarouselPhotoUrls}/>
                         <iframe
-                            width="600"
-                            height="450"
+                            className="w-1/2 aspect-ratio: video"
                             loading="lazy"
                             allowFullScreen
                             referrerPolicy="no-referrer-when-downgrade"
                             src={`https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_EMBED_API_KEY}
     &q=${selectedPropertyAddress}>`}
                         />
-                        <Carousel urls={selectedCarouselPhotoUrls}/>
                     </div>
                 )
             }
-            <table className="table-auto w-full border-separate border-spacing-x-3 border-spacing-y-3 text-md">
-                <Fragment>
-                    <Header
-                        namesByColumn={headerNamesByColumn}
-                        onColumnClick={handleColumnClick}
-                    />
-                    <tbody>
-                    {
-                        rowData.map(v => (<Row key={v.identifier} {...v} />))
-                    }
-                    </tbody>
-                </Fragment>
-            </table>
+            <div className='overflow-auto' style={{ display: 'flex', alignItems: "stretch"}}>
+                <table
+                    className="table-auto w-full overflow-scroll border-separate border-spacing-x-3 border-spacing-y-3 text-md">
+                    <Fragment>
+                        <Header
+                            namesByColumn={headerNamesByColumn}
+                            onColumnClick={handleColumnClick}
+                        />
+                        <tbody>
+                        {
+                            rowData.map(v => (<Row key={v.identifier} {...v} />))
+                        }
+                        </tbody>
+                    </Fragment>
+                </table>
+            </div>
         </div>
     );
 }
