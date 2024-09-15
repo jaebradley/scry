@@ -21,15 +21,15 @@ const Carousel = (props: { urls: string[] }) => {
         });
     }, [setActiveUrlIndex, props.urls]);
     return (
-        <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-            <div>
-                <FontAwesomeIcon icon={faChevronLeft} onClick={handleLeftClick}/>
-            </div>
-            <div style={{ width: "600px", height: "450px" }}>
-                <img src={props.urls[activeUrlIndex]}/>
-            </div>
-            <div>
-                <FontAwesomeIcon icon={faChevronRight} onClick={handleRightClick}/>
+        <div className="aspect-ratio: video size-fit" style={{display: "flex", flexDirection: "column"}}>
+            <img src={props.urls[activeUrlIndex]}/>
+            <div style={{display: "flex", flexDirection: 'row', justifyContent: 'space-between'}}>
+                <div>
+                    <FontAwesomeIcon icon={faChevronLeft} onClick={handleLeftClick}/>
+                </div>
+                <div>
+                    <FontAwesomeIcon icon={faChevronRight} onClick={handleRightClick}/>
+                </div>
             </div>
         </div>
     )
