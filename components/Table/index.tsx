@@ -42,6 +42,7 @@ const COMPARATORS_BY_COLUMN: Record<DataColumn, IComparator<string> | IComparato
     [DataColumn.Price]: (a: number, b: number) => a - b,
     [DataColumn.Estimate]: (a: number, b: number) => a - b,
     [DataColumn.Difference]: (a: number, b: number) => a - b,
+    [DataColumn.PercentDifference]: (a: number, b: number) => a - b,
 };
 
 const FORMATTERS_BY_COLUMN: Record<DataColumn, ((value: string) => string) | ((value: number) => string)> = {
@@ -60,6 +61,10 @@ const FORMATTERS_BY_COLUMN: Record<DataColumn, ((value: string) => string) | ((v
         style: "currency",
         currency: "USD",
         maximumFractionDigits: 0
+    }),
+    [DataColumn.PercentDifference]: (v: number) => v.toLocaleString("en-US", {
+        maximumFractionDigits: 1,
+        style: 'percent'
     }),
 };
 

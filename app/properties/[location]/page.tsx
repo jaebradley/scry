@@ -26,7 +26,8 @@ export default async function Page({params}: { params: { location: string } }) {
                 [DataColumn.Address]: v.address,
                 [DataColumn.Price]: v.unformattedPrice,
                 [DataColumn.Estimate]: v.zestimate,
-                [DataColumn.Difference]: v.zestimate - v.unformattedPrice
+                [DataColumn.Difference]: v.zestimate - v.unformattedPrice,
+                [DataColumn.PercentDifference]: (v.zestimate - v.unformattedPrice) / v.unformattedPrice,
             },
             detailUrl: v.detailUrl,
             carouselPhotoUrls: (v.carouselPhotos || []).map(v => v.url),
@@ -35,13 +36,14 @@ export default async function Page({params}: { params: { location: string } }) {
     return (
         <main>
             <Table
-                orderedColumns={[DataColumn.Address, DataColumn.Price, DataColumn.Estimate, DataColumn.Difference]}
+                orderedColumns={[DataColumn.Address, DataColumn.Price, DataColumn.Estimate, DataColumn.Difference, DataColumn.PercentDifference]}
                 namesByColumn={
                     new Map([
                         [DataColumn.Address, "Address"],
                         [DataColumn.Price, "Listing Price"],
                         [DataColumn.Estimate, "Zillow Estimate"],
                         [DataColumn.Difference, "Difference"],
+                        [DataColumn.PercentDifference, "Percent Difference"],
                     ])
                 }
                 propertyData={propertyData}

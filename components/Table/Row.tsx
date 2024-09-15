@@ -6,6 +6,7 @@ enum DataColumn {
     Price = "Price",
     Estimate = "Estimate",
     Difference = "Difference",
+    PercentDifference ="Percent Difference"
 }
 
 enum UserSpecifiedColumn {
