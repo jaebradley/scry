@@ -1,7 +1,5 @@
 'use client';
 
-import {navigateToPropertiesPage} from './actions';
-
 export default function Home() {
 
     return (
@@ -14,7 +12,11 @@ export default function Home() {
                 justifyContent: 'center',
                 alignItems: 'center'
             }}>
-                <form action={navigateToPropertiesPage}>
+                <form method="get" onSubmit={event => {
+                    event.preventDefault();
+                    const location = new FormData(event.target as HTMLFormElement).get('location');
+                    window.location.replace(`/properties/${location}`);
+                }}>
                     <input style={{width: '30rem', marginRight: '1rem'}} name="location" type="text"
                            placeholder="Specify a location to search for properties..."/>
                     <button type="submit">🔍</button>
